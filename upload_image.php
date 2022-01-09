@@ -35,6 +35,10 @@ if (isset($_POST['descricao'])) {
 	<link rel="stylesheet" href="css/style.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="font-awesome/css/all.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+	<!-- Inclusão do jQuery-->
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<!-- Inclusão do Plugin jQuery Validation-->
+	<script src="http://jqueryvalidation.org/files/dist/jquery.validate.js"></script>
 </head>
 
 <body>
@@ -43,38 +47,54 @@ if (isset($_POST['descricao'])) {
 			<div class="formulario-box">
 				<?php
 				if (isset($msg) && $msg != false) {
-					echo "<p>$msg</p>";
+					echo "<br><p class='size16'><strong>$msg</strong></p>";
 				}
 				?><br><br>
-
-				<form action="upload_image.php" method="post" enctype="multipart/form-data" style="border: 1px solid; padding: 29px;">
+				<form id="formulairo" action="upload_image.php" method="post" enctype="multipart/form-data" style="border: 1px solid; padding: 29px;">
 					<label>Selecione o arquivo:</label><br>
-					<input type="file" name="arquivo" required /><br><br>
+					<input type="file" class="arquivo" name="arquivo" id="arquivo" required /><br><br>
 					<label>Escreva o texto:</label><br>
-					<textarea type="text" name="descricao" id="descricao" rows="5" cols="42" required placeholder=" Escreva aqui..."></textarea><br><br>
-					<input type="submit" value="Enviar" style="padding: 5px 20px;" />
+					<textarea type="text" name="descricao" id="descricao" rows="5" cols="42" maxlength="250" required placeholder=" Escreva aqui..." style="padding: 5px;"></textarea><br><br>
+					<input type="submit" value="Enviar" class="submit" style="padding: 5px 20px;" />
 				</form>
 			</div>
 		</div>
 	</div>
-</body>
-<script>
-	function val() {
-		if (trimAll(document.getElementById('descricao').value) === '') {
-			alert('Empty !!');
-		}
-	}
+	<!-- VALIDATE -->
+	<script type="text/javascript">
+		/*$.validator.setDefaults({
+			submitHandler: function() {
+				alert("submitted!");
+			}
+		});
+		$('#form').validate();
+		$('#arquivo').rules('add', {
+			accept: "image/jpeg, image/pjpeg",
+			messages: {
+				accept: "Formato inválido."
+			}
+		});*/
 
-	function trimAll(sString) {
-		while (sString.substring(0, 1) == ' ') {
-			sString = sString.substring(1, sString.length);
-		}
-		while (sString.substring(sString.length - 1, sString.length) == ' ') {
-			sString = sString.substring(0, sString.length - 1);
-		}
-		return sString;
-	}
-</script>
+		$(document).ready(function() {
+			$("#formulairo").validate({
+				rules: {
+					arquivo: {
+						required: true
+
+					},
+					descricao: {
+						required: true,
+						maxlength:250
+					}
+
+				},
+				submitHandler: function(form) {
+					alert("Arquivo enviado com sucesso!");
+				}
+			})
+		});
+	</script>
+</body>
 <!-- include jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <!-- jQuery Modal -->
